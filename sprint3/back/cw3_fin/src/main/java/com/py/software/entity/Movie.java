@@ -21,7 +21,7 @@ public class Movie {
     private String movie_type;
     private Float movie_score;
     private Float movie_boxOffice;
-    private Integer movie_commentCount;
+    private Long movie_commentCount;
     private Date movie_releaseDate;
     private String movie_country;
     private String movie_picture;

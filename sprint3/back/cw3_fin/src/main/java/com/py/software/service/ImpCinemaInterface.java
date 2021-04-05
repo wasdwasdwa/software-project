@@ -31,7 +31,7 @@ public class ImpCinemaInterface implements CinemaInterface{
         Cinema cinema = cinemaRepository.findById(cinema_id).get();
         List<Hall> hallList = hallRepository.findHallByCinemaId(cinema_id);
         for(Hall hall: hallList){
-            List<Schedule> scheduleList = scheduleRepository.findScheduleByHallid(hall.getHall_id());
+            List<Schedule> scheduleList = scheduleRepository.findScheduleByHallId(hall.getHall_id());
             hall.setScheduleList(scheduleList);
         }
         cinema.setHallList(hallList);
@@ -69,8 +69,8 @@ public class ImpCinemaInterface implements CinemaInterface{
     @Transactional(propagation=Propagation.REQUIRED,readOnly=true)
     @Override
     public List<Cinema> findCinemaByMovieId(long movie_id) {
-        ArrayList<Cinema> result = null;
-        List<Schedule> scheduleList = scheduleRepository.findScheduleByMovieid(movie_id);
+        ArrayList<Cinema> result = new ArrayList<>();
+        List<Schedule> scheduleList = scheduleRepository.findScheduleByMovieId(movie_id);
         for(Schedule schedule:scheduleList){
             Hall hall = hallRepository.findById(schedule.getHall_id()).get();
             Cinema cinema = cinemaRepository.findById(hall.getCinema_id()).get();
