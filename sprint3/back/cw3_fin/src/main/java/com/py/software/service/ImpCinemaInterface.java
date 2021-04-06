@@ -63,7 +63,7 @@ public class ImpCinemaInterface implements CinemaInterface{
     @Transactional(propagation=Propagation.REQUIRED,readOnly=true)
     @Override
     public List<Cinema> findCinemaLikeName(String cinema_name) {
-        return cinemaRepository.findCinemaByCinemanameLike(cinema_name);
+        return cinemaRepository.findCinemaByCinemaNameLike(cinema_name);
     }
 
     @Transactional(propagation=Propagation.REQUIRED,readOnly=true)

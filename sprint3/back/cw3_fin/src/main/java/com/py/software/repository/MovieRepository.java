@@ -18,13 +18,13 @@ public interface MovieRepository extends JpaRepository<Movie,Long> {
     List<Movie> findMovieByFnName(String fg_name);
     @Query(value = "select * from movie where movie_type like concat('%',?1,'%') ",nativeQuery = true)
     List<Movie> findMovieByType(String type);
-    @Query(value = "select * from movie order by movie_releaseDate ?1",nativeQuery = true)
+    @Query(value = "select * from movie order by movie_release_date ?1",nativeQuery = true)
     List<Movie> findMovieByMovieReleaseDate(String sort);
-    @Query(value = "select * from movie order by movie_commentCount ?1",nativeQuery = true)
+    @Query(value = "select * from movie order by movie_comment_count ?1",nativeQuery = true)
     List<Movie> findMovieByCommentList(String sort);
     @Query(value = "select * from movie order by movie_score ?1",nativeQuery = true)
     List<Movie> findMovieByMovieScore(String sort);
-    @Query(value = "select * from movie order by movie_boxOffice ?1",nativeQuery = true)
+    @Query(value = "select * from movie order by movie_box_office ?1",nativeQuery = true)
     List<Movie> findMovieByMovieBoxOffice(String sort);
     @Query(value = "select u from movie where movie_cn_name = ?1",nativeQuery = true)
     Movie findMovieByExactName(String name);

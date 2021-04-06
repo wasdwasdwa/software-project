@@ -74,7 +74,7 @@ public class ImpScheduleInterface implements ScheduleInterface{
     @Override
     public Page<Schedule> findScheduleByMovieName(Integer page, Integer limit, String movie_name) {
         Pageable pageable = PageRequest.of(page-1,limit);
-        Movie movie = movieRepository.findMovieByExactName(movie_name);
+        Movie movie = movieRepository.findMovieByMovieCnName(movie_name);
         return scheduleRepository.findSchedulesByMovieId(movie.getMovie_id(),pageable);
     }
 

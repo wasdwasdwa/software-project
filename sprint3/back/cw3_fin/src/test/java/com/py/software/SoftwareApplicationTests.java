@@ -28,7 +28,7 @@ class SoftwareApplicationTests {
 
     @Test
     void findCinemaByName(){
-        System.out.println(cinemaRepository.findCinemaByCinemanameLike("奇幻"));
+        System.out.println(cinemaRepository.findCinemaByCinemaNameLike("奇幻"));
     }
 
     @Test

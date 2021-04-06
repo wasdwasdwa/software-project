@@ -1,6 +1,7 @@
 package com.py.software.entity;
 
 import lombok.Data;
+import org.springframework.boot.context.properties.bind.Name;
 
 import javax.persistence.*;
 
@@ -14,5 +15,5 @@ public class User {
     private String user_pwd;
     private String user_email;
     private Integer user_role;
-    private String user_headImg;
+    private String user_head_img;
 }
