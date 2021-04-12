@@ -6,6 +6,7 @@ import com.py.software.entity.Schedule;
 import com.py.software.repository.CinemaRepository;
 import com.py.software.repository.HallRepository;
 import com.py.software.repository.ScheduleRepository;
+import lombok.extern.log4j.Log4j2;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -42,10 +43,7 @@ public class ImpCinemaInterface implements CinemaInterface{
     @Override
     public String addCinema(Cinema cinema) {
         Cinema cinema1 = cinemaRepository.save(cinema);
-        if(cinema1!=null){
-            return "success";
-        }
-        return "fail";
+        return "success";
     }
 
     @Transactional(propagation=Propagation.REQUIRED,readOnly=true)
