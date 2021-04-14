@@ -15,7 +15,7 @@ public class Schedule {
     private Long schedule_id;
     private Long hall_id;
     private Long movie_id;
-    private Date schedule_start_time;
+    private String schedule_start_time;
     private Integer schedule_price;
     private Integer schedule_remain;
     private Integer schedule_state;
@@ -25,4 +25,6 @@ public class Schedule {
     private Movie scheduleMovie;
     @Transient
     private List<Orderinfo> orderingList;
+    @Transient
+    private Date newTime;
 }

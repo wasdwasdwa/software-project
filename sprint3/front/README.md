@@ -1,24 +1,20 @@
-# vue-se
+#Frontend setup:
 
 ## Project setup
 ```
 npm install
 ```
 
-### Compiles and hot-reloads for development
+## Backend json demo: db.json
+### run backend:
+```
+npm run backend
+```
+### run serve:
 ```
 npm run serve
 ```
 
-### Compiles and minifies for production
-```
-npm run build
-```
-
-### Lints and fixes files
-```
-npm run lint
-```
 
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).

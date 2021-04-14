@@ -52,8 +52,8 @@ public class ImpMovieInterface implements MovieInterface{
     @Override
     public void delCommentCount(Long movie_id) {
         Movie movie  = movieRepository.findById(movie_id).get();
-        Long num = movie.getMovie_commentCount();
-        movie.setMovie_commentCount(--num);
+        Long num = movie.getMovie_comment_count();
+        movie.setMovie_comment_count(--num);
         movieRepository.save(movie);
     }
 
@@ -61,8 +61,8 @@ public class ImpMovieInterface implements MovieInterface{
     @Override
     public void addCommentCount(Long movie_id) {
         Movie movie  = movieRepository.findById(movie_id).get();
-        Long num = movie.getMovie_commentCount();
-        movie.setMovie_commentCount(++num);
+        Long num = movie.getMovie_comment_count();
+        movie.setMovie_comment_count(++num);
         movieRepository.save(movie);
     }
 
@@ -70,8 +70,8 @@ public class ImpMovieInterface implements MovieInterface{
     @Override
     public void changeMovieBoxOffice(float price, Long movie_id) {
         Movie movie = movieRepository.findById(movie_id).get();
-        float temp = movie.getMovie_boxOffice();
-        movie.setMovie_boxOffice(temp+price);
+        float temp = movie.getMovie_box_office();
+        movie.setMovie_box_office(temp+price);
         movieRepository.save(movie);
     }
 
