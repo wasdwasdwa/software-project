@@ -1,10 +1,6 @@
 <template>
-    <div class="seat" @click="addToOrder(seat)"
-        :class="{'available': seat.isAvailable,
-        'unavailable': !seat.isAvailable,
-        'temp-unavailable': seat.isTempUnavailable,
-        'selected': seat.isSelected}" >
-        <span class="display-1 font-weight-thin">{{seat.row}} {{seat.column}}</span>
+        <div @click="selected(seat.id)" :class="[seat.isAvailable ? 'available' : 'unavailable',!seat.isSelected ? 'available' : 'unavailable',tempSelect ? 'selected' :'', 'seat']" :style="style">
+        <span class="display-7 font-weight-thin">{{seat.row}}-{{seat.column}}</span>
     </div>
 </template>
 
@@ -14,38 +10,52 @@ export default {
     props: {
         seat: Object,
     },
-    methods: {
-        addToOrder() {
-
+    data() {
+        return {
+            row: 50*(this.seat.row-1),
+            column: 60*(this.seat.column-1),
+            tempSelect: false
         }
-    }
+    },
+    computed: {
+        style() {
+            return 'left:' + this.column + ";top:" +this.row;
+        }
+    },
+    methods: {
+        selected(id) {
+            this.tempSelect = !this.tempSelect
+            this.$emit('seatSelected',id);
+        },
+    },
 }
 </script>
 
 
-<style scoped>
+<style>
     .seat {
-    height: 100%;
-    margin: 0 10px;
-    font-size: 3rem;
+    height: 50px;
+    width: 60px;
+    margin: 2px 3px;
+    font-size: 1rem;
     color: white;
-    box-shadow: 0 2px 5px 2px rgba(darken(#666666, 40%),0.75);
-    text-shadow: 1px 1px darken(#333333, 40%);
+    box-shadow: 0 2px 5px 2px rgba(darken(#f8c578, 40%),0.75);
+    text-shadow: 1px 1px darken(#40756e, 40%);
+    float: left;
+    position: relative;
+    text-align: center;
+    padding-top:12px;
     }
 
     .available{
-        background-color: rgba(#FFCC33,0.9);
+        background-color: rgba(133,36,12);
         cursor: pointer;
     }
 
     .available:hover:not(.selected) {
-        background-color: whitesmoke;
-        color: black;
+        background-color: #40756e;
     }
 
-    .selected{
-        background-color: darken(#666666, 40%);
-    }
 
     .temp-unavailable{
         background: repeating-linear-gradient(
@@ -55,6 +65,10 @@ export default {
     }
 
     .unavailable{
-        background-color: #9a0000;
+        background-color:#999999;
+    }
+
+    .selected{
+        background-color: rgba(237,169,58 ,0.9);
     }
 </style>

@@ -30,6 +30,13 @@ export default {
         },
         async fetchMovie(id) {
             const res = await fetch(`api/movies/${id}`)
+            // const res = await fetch('api/movies',{
+            //     method: 'GET',
+            //     headers: {
+            //         'Content-type': 'application/json',
+            //     },
+            //     body: JSON.stringify(id)
+            // })
 
             const data = await res.json()
 

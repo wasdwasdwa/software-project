@@ -8,7 +8,7 @@
                 </li>
             </ul>
         </nav>
-        <div data-bs-spy="scroll" data-bs-target="#navbar-example2" data-bs-offset="0" tabindex="0">
+        <div :v-if="movie.state" data-bs-spy="scroll" data-bs-target="#navbar-example2" data-bs-offset="0" tabindex="0">   
             <p>
             <a class="btn btn-dark text-light" data-bs-toggle="collapse" href="#multiCollapseExample1" role="button" aria-expanded="false" aria-controls="multiCollapseExample1">{{date0}}</a>
             <button class="btn btn-dark text-light" type="button" data-bs-toggle="collapse" data-bs-target="#multiCollapseExample2" aria-expanded="false" aria-controls="multiCollapseExample2">{{date1}}</button>
@@ -60,6 +60,8 @@
             </div>
             </div>
         </div>
+        <div :v-else="!movie.state" data-bs-spy="scroll" data-bs-target="#navbar-example2" data-bs-offset="0" tabindex="0">
+        </div>
     </div>
 </template>
 
@@ -98,6 +100,13 @@ export default {
         },
         async fetchCinema(cid) {
             const res = await fetch(`api/cinemas/${cid}`)
+            // const res = await fetch('api/cinemas',{
+            //     method: 'GET',
+            //     headers: {
+            //         'Content-type': 'application/json',
+            //     },
+            //     body: JSON.stringify(cid)
+            // })
 
             const data = await res.json()
 
@@ -105,6 +114,13 @@ export default {
         },
         async fetchMovie(mid) {
             const res = await fetch(`api/movies/${mid}`)
+            // const res = await fetch('api/movies',{
+            //     method: 'GET',
+            //     headers: {
+            //         'Content-type': 'application/json',
+            //     },
+            //     body: JSON.stringify(cid)
+            // })
 
             const data = await res.json()
 
@@ -112,6 +128,13 @@ export default {
         },
         async fetchTimetables(mid,cid,did) {
             const res = await fetch(`api/movie${mid}Cinema${cid}Time${did}`)
+            // const res = await fetch('api/movies',{
+            //     method: 'GET',
+            //     headers: {
+            //         'Content-type': 'application/json',
+            //     },
+            //     body: JSON.stringify(cid)
+            // })
 
             const data = await res.json()
 

@@ -29,12 +29,19 @@ export default {
     data () {
         return {
             movies: [],
-            cid: this.$route.query.id
+            cid: parseInt(this.$route.query.id)
         }
     },
     methods: {
         async fetchMoviesWithCid(cid) {
             const res = await fetch(`api/cinema${cid}Movies`)
+            // const res = await fetch('api/cinema',{
+            //     method: 'GET',
+            //     headers: {
+            //         'Content-type': 'application/json',
+            //     },
+            //     body: JSON.stringify(cid),
+            // })
 
             const data = await res.json()
 

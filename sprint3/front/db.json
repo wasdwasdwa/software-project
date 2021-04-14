@@ -1,190 +1,276 @@
 {
-    "movies": [
-        {
-            "id": 1,
-            "name": "Titanic",
-            "description": "This is a great romantic movie",
-            "poster": "require('./src/assets/poster/Titanic.jpg')",
-            "state": true
-        },
-        {
-            "id": 2,
-            "name": "The invisible guest",
-            "description": "This is a great suspecious movie",
-            "poster": "require('./src/assets/poster/The invisible guest.jpg')",
-            "state": true
-        },
-        {
-            "id": 3,
-            "name": "Spiderman",
-            "description": "This is a great superhero movie",
-            "poster": "require('./src/assets/poster/spiderman.jpg')",
-            "state": true
-        },
-        {
-            "id": 4,
-            "name": "Titanic",
-            "description": "This is a great romantic movie",
-            "poster": "require('./src/assets/poster/Titanic.jpg')",
-            "state": true
-        },
-        {
-            "id": 5,
-            "name": "The invisible guest The invisible guest The invisible guest The invisible guest",
-            "description": "This is a great suspecious movie",
-            "poster": "require('./src/assets/poster/The invisible guest.jpg')",
-            "state": false
-        },
-        {
-            "id": 6,
-            "name": "Spiderman",
-            "description": "This is a great superhero movie",
-            "poster": "require('./src/assets/poster/spiderman.jpg')",
-            "state": false
-        }, 
-        {
-            "id": 7,
-            "name": "Spiderman",
-            "description": "This is a great superhero movie",
-            "poster": "require('./src/assets/poster/spiderman.jpg')",
-            "state": false
-        }   
-    ],
-    "cinemas": [
-        {
-            "id": 1,
-            "name": "cinema1",
-            "address": "This is a cinema address that is very very long"
-        },
-        {
-            "id": 2,
-            "name": "cinema2",
-            "address": "This is a cinema address that is very very long"
-        },
-        {
-            "id": 3,
-            "name": "cinema3",
-            "address": "This is a cinema address that is very very long"
-        },
-        {
-            "id": 4,
-            "name": "cinema4",
-            "address": "This is a cinema address that is very very long"
-        },
-        {
-            "id": 5,
-            "name": "cinema555",
-            "address": "This is a cinema address that is very very long"
-        },
-        {
-            "id": 6,
-            "name": "cinema6",
-            "address": "This is a cinema address that is very very long"
-        }, 
-        {
-            "id": 7,
-            "name": "cinema7",
-            "address": "This is a cinema address that is very very long"
-        }   
-    ],
-    "movie1Cinemas": [
-        {
-            "id": 1,
-            "name": "cinema1",
-            "address": "This is a cinema address that is very very long"
-        },
-        {
-            "id": 2,
-            "name": "cinema2",
-            "address": "This is a cinema address that is very very long"
-        },
-        {
-            "id": 3,
-            "name": "cinema3",
-            "address": "This is a cinema address that is very very long"
-        },
-        {
-            "id": 4,
-            "name": "cinema4",
-            "address": "This is a cinema address that is very very long"
-        }
-    ],
-    "cinema1Movies":[
-        {
-            "id": 1,
-            "name": "Titanic",
-            "description": "This is a great romantic movie",
-            "poster": "require('./src/assets/poster/Titanic.jpg')",
-            "state": true
-        },
-        {
-            "id": 2,
-            "name": "The invisible guest",
-            "description": "This is a great suspecious movie",
-            "poster": "require('./src/assets/poster/The invisible guest.jpg')",
-            "state": false
-        }
-    ],
-    "movie1Cinema1Time0": [
-        {
-            "id": 1,
-            "time": "12:19",
-            "hall": "hall 11"
-        },
-        {
-            "id": 2,
-            "time": "12:46",
-            "hall": "hall 3"
-        }
-    ],
-    "movie1Cinema1Time1": [
-        {
-            "id": 1,
-            "time": "12:19",
-            "hall": "hall 11"
-        },
-        {
-            "id": 2,
-            "time": "12:46",
-            "hall": "hall 3"
-        }
-    ],
-    "movie1Cinema1Time2": [
-        {
-            "id": 1,
-            "time": "12:19",
-            "hall": "hall 11"
-        },
-        {
-            "id": 2,
-            "time": "12:46",
-            "hall": "hall 3"
-        }
-    ],
-    "movie1Cinema1Time3": [
-        {
-            "id": 1,
-            "time": "12:19",
-            "hall": "hall 11"
-        },
-        {
-            "id": 2,
-            "time": "12:46",
-            "hall": "hall 3"
-        }
-    ],
-    "seatsM1C1D0":[
-        {
-            "id":1,
-            "row": 1,
-            "column": 1,
-            "isAvailable": true
-        },
-        {
-            "id":1,
-            "row": 1,
-            "column": 2,
-            "isAvailable": true
-        }
-    ]
+  "movies": [
+    {
+      "id": 1,
+      "name": "Titanic",
+      "description": "This is a great romantic movie",
+      "poster": "require('./src/assets/poster/Titanic.jpg')",
+      "state": true
+    },
+    {
+      "id": 2,
+      "name": "The invisible guest",
+      "description": "This is a great suspecious movie",
+      "poster": "require('./src/assets/poster/The invisible guest.jpg')",
+      "state": true
+    },
+    {
+      "id": 3,
+      "name": "Spiderman",
+      "description": "This is a great superhero movie",
+      "poster": "require('./src/assets/poster/spiderman.jpg')",
+      "state": true
+    },
+    {
+      "id": 4,
+      "name": "Titanic",
+      "description": "This is a great romantic movie",
+      "poster": "require('./src/assets/poster/Titanic.jpg')",
+      "state": true
+    },
+    {
+      "id": 5,
+      "name": "The invisible guest The invisible guest The invisible guest The invisible guest",
+      "description": "This is a great suspecious movie",
+      "poster": "require('./src/assets/poster/The invisible guest.jpg')",
+      "state": false
+    },
+    {
+      "id": 6,
+      "name": "Spiderman",
+      "description": "This is a great superhero movie",
+      "poster": "require('./src/assets/poster/spiderman.jpg')",
+      "state": false
+    },
+    {
+      "id": 7,
+      "name": "Spiderman",
+      "description": "This is a great superhero movie",
+      "poster": "require('./src/assets/poster/spiderman.jpg')",
+      "state": false
+    }
+  ],
+  "cinemas": [
+    {
+      "id": 1,
+      "name": "cinema1",
+      "address": "This is a cinema address that is very very long"
+    },
+    {
+      "id": 2,
+      "name": "cinema2",
+      "address": "This is a cinema address that is very very long"
+    },
+    {
+      "id": 3,
+      "name": "cinema3",
+      "address": "This is a cinema address that is very very long"
+    },
+    {
+      "id": 4,
+      "name": "cinema4",
+      "address": "This is a cinema address that is very very long"
+    },
+    {
+      "id": 5,
+      "name": "cinema555",
+      "address": "This is a cinema address that is very very long"
+    },
+    {
+      "id": 6,
+      "name": "cinema6",
+      "address": "This is a cinema address that is very very long"
+    },
+    {
+      "id": 7,
+      "name": "cinema7",
+      "address": "This is a cinema address that is very very long"
+    }
+  ],
+  "movie1Cinemas": [
+    {
+      "id": 1,
+      "name": "cinema1",
+      "address": "This is a cinema address that is very very long"
+    },
+    {
+      "id": 2,
+      "name": "cinema2",
+      "address": "This is a cinema address that is very very long"
+    },
+    {
+      "id": 3,
+      "name": "cinema3",
+      "address": "This is a cinema address that is very very long"
+    },
+    {
+      "id": 4,
+      "name": "cinema4",
+      "address": "This is a cinema address that is very very long"
+    }
+  ],
+  "cinema1Movies": [
+    {
+      "id": 1,
+      "name": "Titanic",
+      "description": "This is a great romantic movie",
+      "poster": "require('./src/assets/poster/Titanic.jpg')",
+      "state": true
+    },
+    {
+      "id": 2,
+      "name": "The invisible guest",
+      "description": "This is a great suspecious movie",
+      "poster": "require('./src/assets/poster/The invisible guest.jpg')",
+      "state": false
+    }
+  ],
+  "movie1Cinema1Time0": [
+    {
+      "id": 1,
+      "time": "12:19",
+      "hall": "hall 11"
+    },
+    {
+      "id": 2,
+      "time": "12:46",
+      "hall": "hall 3"
+    }
+  ],
+  "movie1Cinema1Time1": [
+    {
+      "id": 1,
+      "time": "12:19",
+      "hall": "hall 11"
+    },
+    {
+      "id": 2,
+      "time": "12:46",
+      "hall": "hall 3"
+    }
+  ],
+  "movie1Cinema1Time2": [
+    {
+      "id": 1,
+      "time": "12:19",
+      "hall": "hall 11"
+    },
+    {
+      "id": 2,
+      "time": "12:46",
+      "hall": "hall 3"
+    }
+  ],
+  "movie1Cinema1Time3": [
+    {
+      "id": 1,
+      "time": "12:19",
+      "hall": "hall 11"
+    },
+    {
+      "id": 2,
+      "time": "12:46",
+      "hall": "hall 3"
+    }
+  ],
+  "seatsM1C1D1": [
+    {
+      "id": 1,
+      "row": 1,
+      "column": 1,
+      "isAvailable": false,
+      "isSelected": false
+    },
+    {
+      "id": 2,
+      "row": 1,
+      "column": 2,
+      "isAvailable": true,
+      "isSelected": false
+    },
+    {
+      "id": 3,
+      "row": 1,
+      "column": 3,
+      "isAvailable": true,
+      "isSelected": false
+    },
+    {
+      "id": 4,
+      "row": 1,
+      "column": 4,
+      "isAvailable": false,
+      "isSelected": false
+    },
+    {
+      "id": 5,
+      "row": 1,
+      "column": 5,
+      "isAvailable": true,
+      "isSelected": false
+    },
+    {
+      "id": 6,
+      "row": 1,
+      "column": 6,
+      "isAvailable": true,
+      "isSelected": false
+    },
+    {
+      "id": 7,
+      "row": 1,
+      "column": 7,
+      "isAvailable": false,
+      "isSelected": false
+    },
+    {
+      "id": 8,
+      "row": 1,
+      "column": 8,
+      "isAvailable": true,
+      "isSelected": false
+    },
+    {
+      "id": 9,
+      "row": 1,
+      "column": 9,
+      "isAvailable": true,
+      "isSelected": false
+    },
+    {
+      "id": 10,
+      "row": 1,
+      "column": 10,
+      "isAvailable": false,
+      "isSelected": false
+    },
+    {
+      "id": 11,
+      "row": 1,
+      "column": 11,
+      "isAvailable": true,
+      "isSelected": false
+    },
+    {
+      "id": 12,
+      "row": 1,
+      "column": 12,
+      "isAvailable": true,
+      "isSelected": false
+    },
+    {
+      "id": 13,
+      "row": 2,
+      "column": 1,
+      "isAvailable": true,
+      "isSelected": false
+    },
+    {
+      "id": 14,
+      "row": 12,
+      "column": 12,
+      "isAvailable": true,
+      "isSelected": false
+    }
+  ]
 }

@@ -11,7 +11,7 @@
         <div data-bs-spy="scroll" data-bs-target="#navbar-example2" data-bs-offset="0" tabindex="0">
             <div class="row">
                 <div class="col-sm-5 col-lg-5 col-md-5">
-                        <img :src="movie.poster" class="d-block w-100" :alt="movie.name">
+                    <img :src="movie.poster" class="d-block w-100" :alt="movie.name">
                 </div>
                 <div class="col-sm-7 col-lg-7 col-md-7">
                     <h4>Brief description:</h4>
@@ -23,8 +23,10 @@
                 </div>
             </div>
             <div class="row justify-content-md-center">
-                <div class="col-sm-8 col-lg-8 col-md-8" v-for="seat in seats" :key="seat.id">
-                <Seat :seat="seat" :mid="mid" :cid="cid" :did="did"/>
+                <div class="col-sm-8 col-lg-8 col-md-8">
+                <div v-for="seat in seats" :key="seat.id">
+                <Seat @seatSelected="select($event)" :seat="seat" :mid="mid" :cid="cid" :did="did"/>
+                </div>
                 </div>
                 <a @click="getOrder(mid,cid,did)" class="btn btn-dark text-white mt-2">Confirm!</a>  
             </div>
@@ -47,11 +49,50 @@ export default {
             did: parseInt(this.$route.query.did),
             movie: Object,
             seats: Array,
+            selected: []
         }
     },
     methods: {
+        async select(msg) {
+            let id = msg;
+            const seatSelected = await this.fetchSeat(this.mid,this.cid,this.did,id)
+            const upDate = {...seatSelected,isSelected: !seatSelected.isSelected}
+
+            if(upDate.isSelected) {
+                this.selected = [...this.selected,upDate]
+            } else {
+                this.selected = this.selected.filter((seat) => seat.id !== upDate.id)
+            }
+
+            const res = await fetch(`api/seatsM${this.mid}C${this.cid}D${this.did}/${id}`,{
+                method: 'PUT',
+                headers: {
+                    'Content-type': 'application/json'
+                },
+                body: JSON.stringify(upDate)
+            })
+            // const res = await fetch('api/seatsMCDS',{
+            //     method: 'PUT',
+            //     headers: {
+            //         'Content-type': 'application/json'
+            //     },
+            //     body: JSON.stringify(upDate,this.mid,this.cid,this.did,id)
+            // })
+
+            const data = await res.json()
+
+            this.seats = this.seats.map((seat)=>seat.id === id ? {...seat,isSelected:data.isSelected}:seat
+            )
+        },
         async fetchMovie(mid) {
             const res = await fetch(`api/movies/${mid}`)
+            // const res = await fetch('api/movies',{
+            //     method: 'GET',
+            //     headers: {
+            //         'Content-type': 'application/json',
+            //     },
+            //     body: JSON.stringify(mid)
+            // })
 
             const data = await res.json()
 
@@ -59,11 +100,43 @@ export default {
         },
         async fetchSeats(mid,cid,did) {
             const res = await fetch(`api/seatsM${mid}C${cid}D${did}`)
+            // const res = await fetch('api/seatsMCD',{
+            //     method: 'GET',
+            //     headers: {
+            //         'Content-type': 'application/json',
+            //     },
+            //     body: JSON.stringify(mid,cid,did)
+            // })
 
             const data = await res.json()
 
             return data
         },
+        async fetchSeat(mid,cid,did,sid) {
+            const res = await fetch(`api/seatsM${mid}C${cid}D${did}/${sid}`)
+            // const res = await fetch('api/seatsMCDS',{
+            //     method: 'GET',
+            //     headers: {
+            //         'Content-type': 'application/json',
+            //     },
+            //     body: JSON.stringify(mid,cid,did,sid)
+            // })
+
+            const data = await res.json()
+
+            return data
+        },
+        async getOrder(mid,cid,did) {
+            this.$router.push({
+                name: 'Orders',
+                query: {
+                    mid: mid,
+                    cid: cid,
+                    did: did,
+                    sel: this.selected
+                }
+            })  
+        }
     },
     async created () {
         this.movie = await this.fetchMovie(this.$route.query.mid)
@@ -71,3 +144,9 @@ export default {
     }
 }
 </script>
+
+<style scoped>
+    Seat{
+        float: left
+    }
+</style>

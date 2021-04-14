@@ -41,7 +41,13 @@ export default {
             return data
         },
         async fetchCinemasWithMid(mid) {
-            const res = await fetch(`api/movie${mid}Cinemas`)
+            const res = await fetch('api/movieCinemas',{
+                method: 'GET',
+                headers: {
+                    'Content-type': 'application/json',
+                },
+                body: JSON.stringify(mid)
+            })
 
             const data = await res.json()
 
