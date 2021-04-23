@@ -20,6 +20,7 @@
 
 <script>
 import Cinema from '../components/Cinema'
+import Axios from 'axios'
 
 export default {
     name: 'Cinemas',
@@ -29,36 +30,45 @@ export default {
     data () {
         return {
             cinemas: [],
-            mid: this.$route.query.id
+            mid: parseInt(this.$route.query.id)
         }
     },
     methods: {
         async fetchCinemas() {
-            const res = await fetch('api/cinemas')
+            Axios.get('http://localhost:8181/cinemas').then(res=>{
+                console.log(res.data)
+                this.cinemas = res.data;
+            }).catch(error=> {
+                console.log(error);
+            });
+            // const res = await fetch('api/cinemas')
 
-            const data = await res.json()
+            // const data = await res.json()
 
-            return data
+            // return data
         },
         async fetchCinemasWithMid(mid) {
-            const res = await fetch('api/movieCinemas',{
-                method: 'GET',
-                headers: {
-                    'Content-type': 'application/json',
-                },
-                body: JSON.stringify(mid)
-            })
+            Axios.get('http://localhost:8181/movieCinemas',{
+                params:{
+                    mid: mid
+                }
+            }).then(function(res){
+                this.cinemas = res.data;
+            }).catch(function (error) {
+                console.log(error);
+            });
+            // const res = await fetch(`api/movie${mid}Cinemas`)
 
-            const data = await res.json()
+            // const data = await res.json()
 
-            return data
+            // return data
         },
     },
     async created () {
         if (this.$route.query.id) {
-            this.cinemas = await this.fetchCinemasWithMid(this.$route.query.id)
+            this.fetchCinemasWithMid(this.$route.query.id)
         } else {
-            this.cinemas = await this.fetchCinemas()
+            this.fetchCinemas()
         }
     },
 }

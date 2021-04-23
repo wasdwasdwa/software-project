@@ -8,6 +8,7 @@
 <script>
 import Carousel from '../components/Carousel.vue'
 import Movies from '../components/Movies.vue'
+import Axios from 'axios'
 
 export default {
     name: 'Home',
@@ -22,14 +23,25 @@ export default {
     },
     methods: {
         async fetchMovies() {
-            const res = await fetch('api/movies')
+            let re = await Axios.get('http://localhost:8181/movies')
+            return re.data
+            // const res = await fetch('api/movies')
 
-            const data = await res.json()
+            // const data = await res.json()
 
-            return data
+            // return data
         },
         async fetchMovie(id) {
-            const res = await fetch(`api/movies/${id}`)
+            Axios.get('http://localhost:8181/movies',{
+                params:{
+                    mid: id
+                }
+            }).then(function(res){
+                this.movies = res.data;
+            }).catch(function (error) {
+                console.log(error);
+            });
+            // const res = await fetch(`api/movies/${id}`)
             // const res = await fetch('api/movies',{
             //     method: 'GET',
             //     headers: {
@@ -38,9 +50,9 @@ export default {
             //     body: JSON.stringify(id)
             // })
 
-            const data = await res.json()
+            // const data = await res.json()
 
-            return data
+            // return data
         },
     },
     async created () {

@@ -20,7 +20,7 @@
                 <div class="collapse multi-collapse" id="multiCollapseExample1">
                 <div class="card card-body">
                     <div class="col-sm-12 col-lg-12 col-md-12" v-for="time in timetable0" :key="time.id">
-                    <Time :time="time" :cid="cid" :mid="mid"/>
+                    <Time :time="time" :cid="cid" :mid="mid" :tid="t0"/>
                     </div>
                 </div>
                 </div>
@@ -31,7 +31,7 @@
                 <div class="collapse multi-collapse" id="multiCollapseExample2">
                 <div class="card card-body">
                     <div class="col-sm-12 col-lg-12 col-md-12" v-for="time in timetable1" :key="time.id">
-                    <Time :time="time" :cid="cid" :mid="mid"/>
+                    <Time :time="time" :cid="cid" :mid="mid" :tid="t1"/>
                     </div>
                 </div>
                 </div>
@@ -42,7 +42,7 @@
                 <div class="collapse multi-collapse" id="multiCollapseExample3">
                 <div class="row card card-body">
                     <div class="col-sm-12 col-lg-12 col-md-12" v-for="time in timetable2" :key="time.id">
-                    <Time :time="time" :cid="cid" :mid="mid"/>
+                    <Time :time="time" :cid="cid" :mid="mid" :tid="t2"/>
                     </div>
                 </div>
                 </div>
@@ -53,7 +53,7 @@
                 <div class="collapse multi-collapse" id="multiCollapseExample4">
                 <div class="row card card-body">
                     <div class="col-sm-12 col-lg-12 col-md-12" v-for="time in timetable3" :key="time.id">
-                    <Time :time="time" :cid="cid" :mid="mid"/>
+                    <Time :time="time" :cid="cid" :mid="mid" :tid="t3"/>
                     </div>
                 </div>
                 </div>
@@ -67,6 +67,7 @@
 
 <script>
 import Time from '../components/Time'
+import Axios from 'axios'
 
 export default {
     name: 'Times',
@@ -81,6 +82,10 @@ export default {
             timetable1: Array,
             timetable2: Array,
             timetable3: Array,
+            t0: 0,
+            t1: 1,
+            t2: 2,
+            t3: 3,
             date0: String,
             date1: String,
             date2: String,
@@ -99,46 +104,54 @@ export default {
             })        
         },
         async fetchCinema(cid) {
-            const res = await fetch(`api/cinemas/${cid}`)
-            // const res = await fetch('api/cinemas',{
-            //     method: 'GET',
-            //     headers: {
-            //         'Content-type': 'application/json',
-            //     },
-            //     body: JSON.stringify(cid)
-            // })
+            Axios.get('http://localhost:8181/cinemas',{
+                params:{
+                    cid: cid
+                }
+            }).then(function(res){
+                this.cinema = res.data;
+            }).catch(function (error) {
+                console.log(error);
+            });
 
-            const data = await res.json()
+            // const res = await fetch(`api/cinemas/${cid}`)
 
-            return data
+            // const data = await res.json()
+
+            // return data
         },
         async fetchMovie(mid) {
-            const res = await fetch(`api/movies/${mid}`)
-            // const res = await fetch('api/movies',{
-            //     method: 'GET',
-            //     headers: {
-            //         'Content-type': 'application/json',
-            //     },
-            //     body: JSON.stringify(cid)
-            // })
+            Axios.get('http://localhost:8181/movies',{
+                params:{
+                    mid: mid
+                }
+            }).then(function(res){
+                this.movie = res.data;
+            }).catch(function (error) {
+                console.log(error);
+            });
 
-            const data = await res.json()
+            // const res = await fetch(`api/movies/${mid}`)
 
-            return data
+            // const data = await res.json()
+
+            // return data
         },
         async fetchTimetables(mid,cid,did) {
-            const res = await fetch(`api/movie${mid}Cinema${cid}Time${did}`)
-            // const res = await fetch('api/movies',{
-            //     method: 'GET',
-            //     headers: {
-            //         'Content-type': 'application/json',
-            //     },
-            //     body: JSON.stringify(cid)
-            // })
+            let re = await Axios.get('http://localhost:8181/movieCinemaTime',{
+                params:{
+                    mid: mid,
+                    cid: cid,
+                    did: did
+                }
+            })
+            return re.data
 
-            const data = await res.json()
+            // const res = await fetch(`api/movie${mid}Cinema${cid}Time${did}`)
 
-            return data
+            // const data = await res.json()
+
+            // return data
         },
         getdate() {
             var date = new Date();
@@ -178,8 +191,8 @@ export default {
         }
     },
     async created() {
-        this.cinema = await this.fetchCinema(this.$route.query.cid)
-        this.movie = await this.fetchMovie(this.$route.query.mid)
+        this.fetchCinema(this.$route.query.cid)
+        this.fetchMovie(this.$route.query.mid)
         this.timetable0 = await this.fetchTimetables(this.$route.query.mid,this.$route.query.cid,0)
         this.timetable1 = await this.fetchTimetables(this.$route.query.mid,this.$route.query.cid,1)
         this.timetable2 = await this.fetchTimetables(this.$route.query.mid,this.$route.query.cid,2)

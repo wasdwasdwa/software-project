@@ -20,6 +20,7 @@
 
 <script>
 import Movieview from '../components/Movieview'
+import Axios from 'axios'
 
 export default {
     name: 'Movies',
@@ -34,22 +35,24 @@ export default {
     },
     methods: {
         async fetchMoviesWithCid(cid) {
-            const res = await fetch(`api/cinema${cid}Movies`)
-            // const res = await fetch('api/cinema',{
-            //     method: 'GET',
-            //     headers: {
-            //         'Content-type': 'application/json',
-            //     },
-            //     body: JSON.stringify(cid),
-            // })
+            Axios.get('http://localhost:8181/cinemaMovies',{
+                params:{
+                    cid: cid
+                }
+            }).then(function(res){
+                this.movies = res.data;
+            }).catch(function (error) {
+                console.log(error);
+            });
+            // const res = await fetch(`api/cinema${cid}Movies`)
 
-            const data = await res.json()
+            // const data = await res.json()
 
-            return data
+            // return data
         }
     },
     async created () {
-        this.movies = await this.fetchMoviesWithCid(this.$route.query.id)
+        this.fetchMoviesWithCid(this.$route.query.id)
     },
 }
 </script>

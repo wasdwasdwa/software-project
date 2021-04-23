@@ -4,7 +4,6 @@ import Cinemas from '../views/Cinemas'
 import Movies from '../views/Movies'
 import Times from '../views/Times'
 import Seats from '../views/Seats'
-import Orders from '../views/Orders'
 
 const routes = [
     {
@@ -31,11 +30,6 @@ const routes = [
         path: '/seats',
         name: 'Seats',
         component: Seats,
-    },
-    {
-        path: '/orders',
-        name: 'Orders',
-        component: Orders,
     }
 ]
 

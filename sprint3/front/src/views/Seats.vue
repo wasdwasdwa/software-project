@@ -2,11 +2,6 @@
     <div>
         <nav id="navbar-example2" class="navbar navbar-light bg-light px-3 mb-3">
             <a class="navbar-brand" >{{movie.name}}</a>
-            <!-- <ul class="nav nav-pills">
-                <li class="nav-item">
-                <a class="nav-link text-dark fs-4 position-absolute top-50 start-50 translate-middle" href="#">{{movie.name}}</a>
-                </li>
-            </ul> -->
         </nav>
         <div data-bs-spy="scroll" data-bs-target="#navbar-example2" data-bs-offset="0" tabindex="0">
             <div class="row">
@@ -20,15 +15,19 @@
                     <p>{{movie.description}}</p>
                     <h4>Main actors:</h4>
                     <p>{{movie.description}}</p>
+                    <h4>Time:</h4>
+                    <p>{{hall.time}}</p>
+                    <h4>Hall:</h4>
+                    <p>{{hall.hall}}</p>
                 </div>
             </div>
             <div class="row justify-content-md-center">
                 <div class="col-sm-8 col-lg-8 col-md-8">
-                <div v-for="seat in seats" :key="seat.id">
-                <Seat @seatSelected="select($event)" :seat="seat" :mid="mid" :cid="cid" :did="did"/>
+                    <div v-for="seat in seats" :key="seat.id">
+                    <Seat @seatSelected="select($event)" :seat="seat" :mid="mid" :cid="cid" :did="did"/>
+                    </div>
                 </div>
-                </div>
-                <a @click="getOrder(mid,cid,did)" class="btn btn-dark text-white mt-2">Confirm!</a>  
+                <Order @order="getOrder()" @unselect="unselect()" v-if="selected.length!=0" :movie="movie" :hall="hall" :cinema="cinema" :selected="selected"/>
             </div>
         </div>
     </div>
@@ -36,11 +35,14 @@
 
 <script>
 import Seat from '../components/Seat'
+import Order from '../components/Order'
+import Axios from 'axios'
 
 export default {
     name: 'Seats',
     components: {
-        Seat
+        Seat,
+        Order
     },
     data() {
         return {
@@ -48,15 +50,54 @@ export default {
             cid: parseInt(this.$route.query.cid),
             did: parseInt(this.$route.query.did),
             movie: Object,
+            cinema: Object,
             seats: Array,
+            hall: Object,
             selected: []
         }
     },
     methods: {
+        async getOrder() {
+            for(let i = 0; i < this.selected.length;i ++) {
+                let id = this.selected[i].id
+                const seatOrdered = await this.fetchSeat(this.mid,this.cid,this.did,id)
+                const upDate = {...seatOrdered,isAvailable: !seatOrdered.isAvailable}
+                let data
+
+                Axios.put('http://localhost:8181/seatsMCD', {
+                    params:{ 
+                        mid: this.mid,
+                        cid: this.cid,
+                        did: this.did,
+                        sid: id
+                    },
+                    upDate
+                }).then(function(res){
+                    data = res.data
+                }).catch(function(error){
+                    console.log(error)
+                });
+
+                // const res = await fetch(`api/seatsM${this.mid}C${this.cid}D${this.did}/${id}`,{
+                // method: 'PUT',
+                // headers: {
+                //     'Content-type': 'application/json'
+                // },
+                // body: JSON.stringify(upDate)
+                // })
+
+                // const data = await res.json()
+
+                this.seats = this.seats.map((seat)=>seat.id === id ? {...seat,isAvailable:data.isAvailable}:seat
+                )
+            }
+        },
         async select(msg) {
             let id = msg;
             const seatSelected = await this.fetchSeat(this.mid,this.cid,this.did,id)
             const upDate = {...seatSelected,isSelected: !seatSelected.isSelected}
+
+            let data
 
             if(upDate.isSelected) {
                 this.selected = [...this.selected,upDate]
@@ -64,83 +105,157 @@ export default {
                 this.selected = this.selected.filter((seat) => seat.id !== upDate.id)
             }
 
-            const res = await fetch(`api/seatsM${this.mid}C${this.cid}D${this.did}/${id}`,{
-                method: 'PUT',
-                headers: {
-                    'Content-type': 'application/json'
+            Axios.put('http://localhost:8181/seatsMCD', {
+                params:{ 
+                    mid: this.mid,
+                    cid: this.cid,
+                    did: this.did,
+                    sid: id
                 },
-                body: JSON.stringify(upDate)
-            })
-            // const res = await fetch('api/seatsMCDS',{
+                upDate
+            }).then(function(res){
+                data = res.data
+            }).catch(function(error){
+                console.log(error)
+            });
+
+            // const res = await fetch(`api/seatsM${this.mid}C${this.cid}D${this.did}/${id}`,{
             //     method: 'PUT',
             //     headers: {
             //         'Content-type': 'application/json'
             //     },
-            //     body: JSON.stringify(upDate,this.mid,this.cid,this.did,id)
+            //     body: JSON.stringify(upDate)
             // })
 
-            const data = await res.json()
+            // const data = await res.json()
 
             this.seats = this.seats.map((seat)=>seat.id === id ? {...seat,isSelected:data.isSelected}:seat
             )
         },
+        async unselect() {
+            for(let i = 0; i < this.selected.length;i ++) {
+                let id = this.selected[i].id
+                const seatUnselect = await this.fetchSeat(this.mid,this.cid,this.did,id)
+                const upDate = {...seatUnselect,isSelected: !seatUnselect.isSelected}
+                let data
+
+                Axios.put('http://localhost:8181/seatsMCD', {
+                    params:{ 
+                        mid: this.mid,
+                        cid: this.cid,
+                        did: this.did,
+                        sid: id
+                    },
+                    upDate
+                }).then(function(res){
+                    data = res.data
+                }).catch(function(error){
+                    console.log(error)
+                });
+
+                this.seats = this.seats.map((seat)=>seat.id === id ? {...seat,isSelected:data.isSelected}:seat
+                )
+            }
+        },
         async fetchMovie(mid) {
-            const res = await fetch(`api/movies/${mid}`)
-            // const res = await fetch('api/movies',{
-            //     method: 'GET',
-            //     headers: {
-            //         'Content-type': 'application/json',
-            //     },
-            //     body: JSON.stringify(mid)
-            // })
+            Axios.get('http://localhost:8181/movies',{
+                params:{
+                    mid: mid
+                }
+            }).then(function(res){
+                this.movie = res.data;
+            }).catch(function (error) {
+                console.log(error);
+            });
 
-            const data = await res.json()
+            // const res = await fetch(`api/movies/${mid}`)
 
-            return data
+            // const data = await res.json()
+
+            // return data
+        },
+        async fetchCinema(cid) {
+            Axios.get('http://localhost:8181/cinemas',{
+                params:{
+                    cid: cid
+                }
+            }).then(function(res){
+                this.cinema = res.data;
+            }).catch(function (error) {
+                console.log(error);
+            });
+
+            // const res = await fetch(`api/cinemas/${cid}`)
+
+            // const data = await res.json()
+
+            // return data
+        },
+        async fetchHall(mid,cid,tid,did) {
+            Axios.get('http://localhost:8181/movieCinemaTime',{
+                params:{
+                    mid: mid,
+                    cid: cid,
+                    tid: tid,
+                    did: did
+                }
+            }).then(function(res){
+                this.hall = res.data;
+            }).catch(function (error) {
+                console.log(error);
+            });
+
+            // const res = await fetch(`api/movie${mid}Cinema${cid}Time${tid}/${did}`)
+
+            // const data = await res.json()
+
+            // return data
         },
         async fetchSeats(mid,cid,did) {
-            const res = await fetch(`api/seatsM${mid}C${cid}D${did}`)
-            // const res = await fetch('api/seatsMCD',{
-            //     method: 'GET',
-            //     headers: {
-            //         'Content-type': 'application/json',
-            //     },
-            //     body: JSON.stringify(mid,cid,did)
-            // })
+            Axios.get('http://localhost:8181/seatsMCD',{
+                params:{
+                    mid: mid,
+                    cid: cid,
+                    did: did
+                }
+            }).then(function(res){
+                this.seats = res.data;
+            }).catch(function (error) {
+                console.log(error);
+            });
 
-            const data = await res.json()
+            // const res = await fetch(`api/seatsM${mid}C${cid}D${did}`)
 
-            return data
+            // const data = await res.json()
+
+            // return data
         },
         async fetchSeat(mid,cid,did,sid) {
-            const res = await fetch(`api/seatsM${mid}C${cid}D${did}/${sid}`)
-            // const res = await fetch('api/seatsMCDS',{
-            //     method: 'GET',
-            //     headers: {
-            //         'Content-type': 'application/json',
-            //     },
-            //     body: JSON.stringify(mid,cid,did,sid)
-            // })
-
-            const data = await res.json()
-
-            return data
-        },
-        async getOrder(mid,cid,did) {
-            this.$router.push({
-                name: 'Orders',
-                query: {
+            Axios.get('http://localhost:8181/seatsMCD',{
+                params:{
                     mid: mid,
                     cid: cid,
                     did: did,
-                    sel: this.selected
+                    sid: sid
                 }
-            })  
+            }).then(function(res){
+                return res.json()
+            }).catch(function (error) {
+                console.log(error);
+            });
+
+            // const res = await fetch(`api/seatsM${mid}C${cid}D${did}/${sid}`)
+
+            // const data = await res.json()
+
+            // return data
         }
     },
     async created () {
-        this.movie = await this.fetchMovie(this.$route.query.mid)
-        this.seats = await this.fetchSeats(this.$route.query.mid,this.$route.query.cid,this.$route.query.did)
+        this.fetchMovie(this.$route.query.mid)
+        this.fetchCinema(this.$route.query.cid)
+        this.fetchSeats(this.$route.query.mid,this.$route.query.cid,this.$route.query.did)
+        this.fetchHall(this.$route.query.mid,this.$route.query.cid,this.$route.query.tid,this.$route.query.did)
     }
 }
 </script>

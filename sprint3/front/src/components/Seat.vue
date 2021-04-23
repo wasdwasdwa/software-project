@@ -24,8 +24,12 @@ export default {
     },
     methods: {
         selected(id) {
-            this.tempSelect = !this.tempSelect
-            this.$emit('seatSelected',id);
+            if(this.seat.isAvailable) {
+                this.tempSelect = !this.tempSelect
+                this.$emit('seatSelected',id);
+            } else if(!this.seat.isSelected) {
+                this.tempSelect = false
+            }
         },
     },
 }
@@ -57,18 +61,15 @@ export default {
     }
 
 
-    .temp-unavailable{
-        background: repeating-linear-gradient(
-        45deg,
-            #9a0000, #9a0000 10px, #FFCC33 10px, #FFCC33 20px
-        );
-    }
-
     .unavailable{
         background-color:#999999;
     }
 
     .selected{
         background-color: rgba(237,169,58 ,0.9);
+    }
+
+    .unavailable:hover:not(.selected){
+        background-color:#999999;
     }
 </style>
