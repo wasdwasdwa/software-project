@@ -104,12 +104,13 @@ export default {
             })        
         },
         async fetchCinema(cid) {
+            const _this=this
             Axios.get('http://localhost:8181/cinemas',{
                 params:{
                     cid: cid
                 }
             }).then(function(res){
-                this.cinema = res.data;
+                _this.cinema = res.data;
             }).catch(function (error) {
                 console.log(error);
             });
@@ -121,12 +122,13 @@ export default {
             // return data
         },
         async fetchMovie(mid) {
+            const _this=this
             Axios.get('http://localhost:8181/movies',{
                 params:{
                     mid: mid
                 }
             }).then(function(res){
-                this.movie = res.data;
+                _this.movie = res.data;
             }).catch(function (error) {
                 console.log(error);
             });
@@ -193,10 +195,11 @@ export default {
     async created() {
         this.fetchCinema(this.$route.query.cid)
         this.fetchMovie(this.$route.query.mid)
-        this.timetable0 = await this.fetchTimetables(this.$route.query.mid,this.$route.query.cid,0)
-        this.timetable1 = await this.fetchTimetables(this.$route.query.mid,this.$route.query.cid,1)
-        this.timetable2 = await this.fetchTimetables(this.$route.query.mid,this.$route.query.cid,2)
-        this.timetable3 = await this.fetchTimetables(this.$route.query.mid,this.$route.query.cid,3)
+        const map = await this.fetchTimetables(this.$route.query.mid,this.$route.query.cid);
+        this.timetable0 = map["today"];
+        this.timetable1 = map["today+1"]
+        this.timetable2 = map["today+2"]
+        this.timetable3 = map["today+3"]
         this.date0 = this.getBeforeDate(0)
         this.date1 = this.getBeforeDate(-1)
         this.date2 = this.getBeforeDate(-2)

@@ -17,6 +17,15 @@ export default {
             tempSelect: false
         }
     },
+    watch: {
+        seat:{
+            handler(val, oldVal){
+                if(val.isSelected != oldVal.isSelected)
+                    this.count()
+            },
+            deep:true
+        }
+    },
     computed: {
         style() {
             return 'left:' + this.column + ";top:" +this.row;
@@ -27,11 +36,14 @@ export default {
             if(this.seat.isAvailable) {
                 this.tempSelect = !this.tempSelect
                 this.$emit('seatSelected',id);
-            } else if(!this.seat.isSelected) {
+            }
+        },
+        count() {
+            if(this.tempSelect == true && !this.seat.isSelected) {
                 this.tempSelect = false
             }
         },
-    },
+    }
 }
 </script>
 

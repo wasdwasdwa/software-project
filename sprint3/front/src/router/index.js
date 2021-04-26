@@ -10,26 +10,41 @@ const routes = [
         path: '/',
         name: 'Home',
         component: Home,
+        meta: {
+            isLogin: false
+        }
     },
     {
         path: '/cinemas',
         name: 'Cinemas',
         component: Cinemas,
+        meta: {
+            isLogin: false
+        }
     },
     {
         path: '/movies',
         name: 'Movies',
         component: Movies,
+        meta: {
+            isLogin: false
+        }
     },
     {
         path: '/times',
         name: 'Times',
         component: Times,
+        meta: {
+            isLogin: false
+        }
     },
     {
         path: '/seats',
         name: 'Seats',
         component: Seats,
+        meta: {
+            isLogin: false
+        }
     }
 ]
 

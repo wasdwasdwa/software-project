@@ -35,12 +35,13 @@ export default {
     },
     methods: {
         async fetchMoviesWithCid(cid) {
+            const _this=this
             Axios.get('http://localhost:8181/cinemaMovies',{
                 params:{
                     cid: cid
                 }
             }).then(function(res){
-                this.movies = res.data;
+                _this.movies = res.data;
             }).catch(function (error) {
                 console.log(error);
             });

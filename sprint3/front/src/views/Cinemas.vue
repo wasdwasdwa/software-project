@@ -35,9 +35,10 @@ export default {
     },
     methods: {
         async fetchCinemas() {
+            const _this = this
             Axios.get('http://localhost:8181/cinemas').then(res=>{
                 console.log(res.data)
-                this.cinemas = res.data;
+                _this.cinemas = res.data;
             }).catch(error=> {
                 console.log(error);
             });
@@ -48,12 +49,13 @@ export default {
             // return data
         },
         async fetchCinemasWithMid(mid) {
+            const _this = this
             Axios.get('http://localhost:8181/movieCinemas',{
                 params:{
                     mid: mid
                 }
             }).then(function(res){
-                this.cinemas = res.data;
+                _this.cinemas = res.data;
             }).catch(function (error) {
                 console.log(error);
             });
@@ -68,6 +70,7 @@ export default {
         if (this.$route.query.id) {
             this.fetchCinemasWithMid(this.$route.query.id)
         } else {
+            this.mid = 0
             this.fetchCinemas()
         }
     },

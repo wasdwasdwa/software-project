@@ -32,27 +32,16 @@ export default {
             // return data
         },
         async fetchMovie(id) {
+            const _this=this
             Axios.get('http://localhost:8181/movies',{
                 params:{
                     mid: id
                 }
             }).then(function(res){
-                this.movies = res.data;
+                _this.movies = res.data;
             }).catch(function (error) {
                 console.log(error);
             });
-            // const res = await fetch(`api/movies/${id}`)
-            // const res = await fetch('api/movies',{
-            //     method: 'GET',
-            //     headers: {
-            //         'Content-type': 'application/json',
-            //     },
-            //     body: JSON.stringify(id)
-            // })
-
-            // const data = await res.json()
-
-            // return data
         },
     },
     async created () {
