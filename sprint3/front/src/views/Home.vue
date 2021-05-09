@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <template>
 <div>
     <Carousel :movies="movies"/>
@@ -44,3 +45,56 @@ export default {
     },
 }
 </script>
+=======
+<template>
+<div>
+    <Carousel :movies="movies"/>
+    <Movies :movies="movies"/>
+</div>
+</template>
+
+<script>
+import Carousel from '../components/Carousel.vue'
+import Movies from '../components/Movies.vue'
+import Axios from 'axios'
+
+export default {
+    name: 'Home',
+    components: {
+        Carousel,
+        Movies
+    },
+    data () {
+        return {
+            movies: []
+        }
+    },
+    methods: {
+        async fetchMovies() {
+            let re = await Axios.get('http://localhost:8181/movies')
+            return re.data
+            // const res = await fetch('api/movies')
+
+            // const data = await res.json()
+
+            // return data
+        },
+        async fetchMovie(id) {
+            const _this=this
+            Axios.get('http://localhost:8181/movies',{
+                params:{
+                    mid: id
+                }
+            }).then(function(res){
+                _this.movies = res.data;
+            }).catch(function (error) {
+                console.log(error);
+            });
+        },
+    },
+    async created () {
+        this.movies = await this.fetchMovies()
+    },
+}
+</script>
+>>>>>>> 49c71a4927b09b1425c2e9e686d5ef2a7e2154c0
