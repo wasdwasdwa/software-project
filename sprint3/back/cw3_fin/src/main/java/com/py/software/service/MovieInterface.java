@@ -14,6 +14,7 @@ public interface MovieInterface {
     void addCommentCount(Long movie_id);
     void changeMovieBoxOffice(float price,Long movie_id);
     List<Movie> findAllMovies(int movie_state);
+    List<Movie> findAllMovie();
     List<Movie> findMoviesLikeCnName(String cn_name);
     List<Movie> findMoviesLikeFnName(String fn_name);
     List<Movie> findMovieLikeType(String type);

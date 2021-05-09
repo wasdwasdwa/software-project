@@ -32,7 +32,7 @@ public class ImpOrderInterface implements OrderInfoInterface{
         return orderinfoRepository.findById(order_id).get();
     }
 
-    @Transactional(propagation= Propagation.REQUIRED,readOnly=true)
+    @Transactional(propagation= Propagation.REQUIRED)
     @Override
     public void addOrder(Orderinfo order) {
         orderinfoRepository.save(order);
@@ -56,6 +56,13 @@ public class ImpOrderInterface implements OrderInfoInterface{
         Pageable pageable = PageRequest.of(page-1,limit);
         User user = userRepository.findUserByName(username);
         return orderinfoRepository.findOrderByUserId(user.getUser_id(),pageable);
+    }
+
+    @Transactional(propagation= Propagation.REQUIRED,readOnly=true)
+    @Override
+    public List<Orderinfo> findOrderByName(String username) {
+        User user = userRepository.findUserByName(username);
+        return orderinfoRepository.selectOrdersByUser(user.getUser_id());
     }
 
     @Transactional(propagation= Propagation.REQUIRED,readOnly=true)

@@ -1,14 +1,14 @@
 <template>
     <div>
         <nav id="navbar-example2" class="navbar navbar-light bg-light px-3 mb-3">
-            <a @click="getMovies(cinema.id)" class="navbar-brand" >{{cinema.name}}</a>
+            <a @click="getMovies(cinema.cinema_id)" class="navbar-brand" >{{cinema.cinema_name}}</a>
             <ul class="nav nav-pills">
                 <li class="nav-item">
                 <a class="nav-link text-dark fs-4 position-absolute top-50 start-50 translate-middle" href="#">{{movie.name}}</a>
                 </li>
             </ul>
         </nav>
-        <div :v-if="movie.state" data-bs-spy="scroll" data-bs-target="#navbar-example2" data-bs-offset="0" tabindex="0">   
+        <div :v-if="movie.movie_state" data-bs-spy="scroll" data-bs-target="#navbar-example2" data-bs-offset="0" tabindex="0">
             <p>
             <a class="btn btn-dark text-light" data-bs-toggle="collapse" href="#multiCollapseExample1" role="button" aria-expanded="false" aria-controls="multiCollapseExample1">{{date0}}</a>
             <button class="btn btn-dark text-light" type="button" data-bs-toggle="collapse" data-bs-target="#multiCollapseExample2" aria-expanded="false" aria-controls="multiCollapseExample2">{{date1}}</button>
@@ -19,7 +19,7 @@
             <div class="col">
                 <div class="collapse multi-collapse" id="multiCollapseExample1">
                 <div class="card card-body">
-                    <div class="col-sm-12 col-lg-12 col-md-12" v-for="time in timetable0" :key="time.id">
+                    <div class="col-sm-12 col-lg-12 col-md-12" v-for="time in timetable0" :key="time.schedule_id">
                     <Time :time="time" :cid="cid" :mid="mid" :tid="t0"/>
                     </div>
                 </div>
@@ -30,7 +30,7 @@
             <div class="col">
                 <div class="collapse multi-collapse" id="multiCollapseExample2">
                 <div class="card card-body">
-                    <div class="col-sm-12 col-lg-12 col-md-12" v-for="time in timetable1" :key="time.id">
+                    <div class="col-sm-12 col-lg-12 col-md-12" v-for="time in timetable1" :key="time.schedule_id">
                     <Time :time="time" :cid="cid" :mid="mid" :tid="t1"/>
                     </div>
                 </div>
@@ -41,7 +41,7 @@
             <div class="col">
                 <div class="collapse multi-collapse" id="multiCollapseExample3">
                 <div class="row card card-body">
-                    <div class="col-sm-12 col-lg-12 col-md-12" v-for="time in timetable2" :key="time.id">
+                    <div class="col-sm-12 col-lg-12 col-md-12" v-for="time in timetable2" :key="time.schedule_id">
                     <Time :time="time" :cid="cid" :mid="mid" :tid="t2"/>
                     </div>
                 </div>
@@ -52,7 +52,7 @@
             <div class="col">
                 <div class="collapse multi-collapse" id="multiCollapseExample4">
                 <div class="row card card-body">
-                    <div class="col-sm-12 col-lg-12 col-md-12" v-for="time in timetable3" :key="time.id">
+                    <div class="col-sm-12 col-lg-12 col-md-12" v-for="time in timetable3" :key="time.schedule_id">
                     <Time :time="time" :cid="cid" :mid="mid" :tid="t3"/>
                     </div>
                 </div>
@@ -60,7 +60,7 @@
             </div>
             </div>
         </div>
-        <div :v-else="!movie.state" data-bs-spy="scroll" data-bs-target="#navbar-example2" data-bs-offset="0" tabindex="0">
+        <div :v-else="!movie.movie_state" data-bs-spy="scroll" data-bs-target="#navbar-example2" data-bs-offset="0" tabindex="0">
         </div>
     </div>
 </template>
@@ -104,12 +104,13 @@ export default {
             })        
         },
         async fetchCinema(cid) {
-            Axios.get('http://localhost:8181/cinemas',{
+            const _this=this
+            Axios.get('http://localhost:8181/cinemas/cinema_id',{
                 params:{
                     cid: cid
                 }
             }).then(function(res){
-                this.cinema = res.data;
+                _this.cinema = res.data;
             }).catch(function (error) {
                 console.log(error);
             });
@@ -121,12 +122,13 @@ export default {
             // return data
         },
         async fetchMovie(mid) {
-            Axios.get('http://localhost:8181/movies',{
+            const _this=this
+            Axios.get('http://localhost:8181/movies/movie_id',{
                 params:{
                     mid: mid
                 }
             }).then(function(res){
-                this.movie = res.data;
+                _this.movie = res.data;
             }).catch(function (error) {
                 console.log(error);
             });
@@ -137,12 +139,11 @@ export default {
 
             // return data
         },
-        async fetchTimetables(mid,cid,did) {
+        async fetchTimetables(mid,cid) {
             let re = await Axios.get('http://localhost:8181/movieCinemaTime',{
                 params:{
                     mid: mid,
-                    cid: cid,
-                    did: did
+                    cid: cid
                 }
             })
             return re.data
@@ -193,10 +194,11 @@ export default {
     async created() {
         this.fetchCinema(this.$route.query.cid)
         this.fetchMovie(this.$route.query.mid)
-        this.timetable0 = await this.fetchTimetables(this.$route.query.mid,this.$route.query.cid,0)
-        this.timetable1 = await this.fetchTimetables(this.$route.query.mid,this.$route.query.cid,1)
-        this.timetable2 = await this.fetchTimetables(this.$route.query.mid,this.$route.query.cid,2)
-        this.timetable3 = await this.fetchTimetables(this.$route.query.mid,this.$route.query.cid,3)
+        const map = await this.fetchTimetables(this.$route.query.mid,this.$route.query.cid);
+        this.timetable0 = map["today"];
+        this.timetable1 = map["today+1"]
+        this.timetable2 = map["today+2"]
+        this.timetable3 = map["today+3"]
         this.date0 = this.getBeforeDate(0)
         this.date1 = this.getBeforeDate(-1)
         this.date2 = this.getBeforeDate(-2)

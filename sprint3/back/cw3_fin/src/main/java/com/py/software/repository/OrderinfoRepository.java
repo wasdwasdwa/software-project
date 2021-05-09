@@ -31,4 +31,9 @@ public interface OrderinfoRepository extends JpaRepository<Orderinfo,Long> {
 
     @Query("from Orderinfo k where k.order_state = ?1")
     Page<Orderinfo> findOrderByState(int order_state, Pageable pageable);
+
+    @Query(value = "select * from orderinfo where user_id = ?1",nativeQuery = true)
+    List<Orderinfo> selectOrdersByUser(Long user_id);
+
+
 }

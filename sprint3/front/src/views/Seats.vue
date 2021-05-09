@@ -1,24 +1,24 @@
 <template>
     <div>
         <nav id="navbar-example2" class="navbar navbar-light bg-light px-3 mb-3">
-            <a class="navbar-brand" >{{movie.name}}</a>
+            <a class="navbar-brand" >{{movie.movie_cn_name}}</a>
         </nav>
         <div data-bs-spy="scroll" data-bs-target="#navbar-example2" data-bs-offset="0" tabindex="0">
             <div class="row">
                 <div class="col-sm-5 col-lg-5 col-md-5">
-                    <img :src="movie.poster" class="d-block w-100" :alt="movie.name">
+                    <img :src="movie.movie_picture" class="d-block w-100" :alt="movie.movie_cn_name">
                 </div>
                 <div class="col-sm-7 col-lg-7 col-md-7">
                     <h4>Brief description:</h4>
-                    <p>{{movie.description}}</p>
+                    <p>{{movie.movie_detail}}</p>
                     <h4>Movie director:</h4>
-                    <p>{{movie.description}}</p>
+                    <p>{{movie.movie_director}}</p>
                     <h4>Main actors:</h4>
-                    <p>{{movie.description}}</p>
+                    <p>{{movie.movie_actor}}</p>
                     <h4>Time:</h4>
-                    <p>{{hall.time}}</p>
+                    <p>{{schedule.newTime}}</p>
                     <h4>Hall:</h4>
-                    <p>{{hall.hall}}</p>
+                    <p>{{hall.hall_name}}</p>
                 </div>
             </div>
             <div class="row justify-content-md-center">
@@ -27,7 +27,7 @@
                     <Seat @seatSelected="select($event)" :seat="seat" :mid="mid" :cid="cid" :did="did"/>
                     </div>
                 </div>
-                <Order @order="getOrder()" @unselect="unselect()" v-if="selected.length!=0" :movie="movie" :hall="hall" :cinema="cinema" :selected="selected"/>
+                <Order @order="getOrder()" @unselect="unselect()" v-if="selected.length!=0" :movie="movie" :hall="hall" :cinema="cinema" :schedule="schedule" :selected="selected"/>
             </div>
         </div>
     </div>
@@ -49,25 +49,31 @@ export default {
             mid: parseInt(this.$route.query.mid),
             cid: parseInt(this.$route.query.cid),
             did: parseInt(this.$route.query.did),
+            tid: parseInt(this.$route.query.tid),
             movie: Object,
             cinema: Object,
             seats: Array,
             hall: Object,
+            schedule:Object,
             selected: []
         }
     },
     methods: {
         async getOrder() {
-            for(let i = 0; i < this.selected.length;i ++) {
-                let id = this.selected[i].id
-                const seatOrdered = await this.fetchSeat(this.mid,this.cid,this.did,id)
+            let temp = this.selected
+            let py = temp.length
+            let _this = this
+            for(let i = 0; i < py;i++) {
+                let id = temp[i].id
+                const seatOrdered = await this.fetchSeat(this.mid,this.cid,this.tid,this.did,id)
                 const upDate = {...seatOrdered,isAvailable: !seatOrdered.isAvailable}
                 let data
 
-                Axios.put('http://localhost:8181/seatsMCD', {
+                await Axios.get('http://localhost:8181/order/updateorder', {
                     params:{ 
                         mid: this.mid,
                         cid: this.cid,
+                        tid: _this.schedule.schedule_id,
                         did: this.did,
                         sid: id
                     },
@@ -78,72 +84,49 @@ export default {
                     console.log(error)
                 });
 
-                // const res = await fetch(`api/seatsM${this.mid}C${this.cid}D${this.did}/${id}`,{
-                // method: 'PUT',
-                // headers: {
-                //     'Content-type': 'application/json'
-                // },
-                // body: JSON.stringify(upDate)
-                // })
-
-                // const data = await res.json()
-
                 this.seats = this.seats.map((seat)=>seat.id === id ? {...seat,isAvailable:data.isAvailable}:seat
                 )
             }
         },
         async select(msg) {
+            const _this = this;
             let id = msg;
-            const seatSelected = await this.fetchSeat(this.mid,this.cid,this.did,id)
+            const seatSelected = await this.fetchSeat(this.mid,this.cid,this.tid,this.did,id)
             const upDate = {...seatSelected,isSelected: !seatSelected.isSelected}
 
-            let data
-
+            let data;
             if(upDate.isSelected) {
                 this.selected = [...this.selected,upDate]
             } else {
                 this.selected = this.selected.filter((seat) => seat.id !== upDate.id)
             }
-
-            Axios.put('http://localhost:8181/seatsMCD', {
-                params:{ 
-                    mid: this.mid,
-                    cid: this.cid,
-                    did: this.did,
-                    sid: id
+            await Axios.get('http://localhost:8181/seats/changeSelected', {
+                params:{
+                    sid : id
                 },
                 upDate
             }).then(function(res){
                 data = res.data
+              console.log(data)
             }).catch(function(error){
                 console.log(error)
             });
 
-            // const res = await fetch(`api/seatsM${this.mid}C${this.cid}D${this.did}/${id}`,{
-            //     method: 'PUT',
-            //     headers: {
-            //         'Content-type': 'application/json'
-            //     },
-            //     body: JSON.stringify(upDate)
-            // })
-
-            // const data = await res.json()
-
-            this.seats = this.seats.map((seat)=>seat.id === id ? {...seat,isSelected:data.isSelected}:seat
-            )
+            _this.seats = _this.seats.map((seat)=>seat.id === id ? {...seat,isSelected:data.isSelected}:seat
+          )
         },
         async unselect() {
-            for(let i = 0; i < this.selected.length;i ++) {
-                let id = this.selected[i].id
-                const seatUnselect = await this.fetchSeat(this.mid,this.cid,this.did,id)
+            let py = this.selected.length
+            let temp = this.selected
+            for(let i = 0; i < py;i++) {
+                let id = temp[i].id
+                const seatUnselect = await this.fetchSeat(this.mid,this.cid,this.tid,this.did,id)
                 const upDate = {...seatUnselect,isSelected: !seatUnselect.isSelected}
+
                 let data
 
-                Axios.put('http://localhost:8181/seatsMCD', {
-                    params:{ 
-                        mid: this.mid,
-                        cid: this.cid,
-                        did: this.did,
+                await Axios.get('http://localhost:8181/seats/changeSelected', {
+                    params:{
                         sid: id
                     },
                     upDate
@@ -155,32 +138,30 @@ export default {
 
                 this.seats = this.seats.map((seat)=>seat.id === id ? {...seat,isSelected:data.isSelected}:seat
                 )
+                this.selected = this.selected.filter((seat) => seat.id !== id)
+              console.log(i)
             }
         },
         async fetchMovie(mid) {
-            Axios.get('http://localhost:8181/movies',{
+            const _this=this
+            Axios.get('http://localhost:8181/movies/movie_id',{
                 params:{
                     mid: mid
                 }
             }).then(function(res){
-                this.movie = res.data;
+                _this.movie = res.data;
             }).catch(function (error) {
                 console.log(error);
             });
-
-            // const res = await fetch(`api/movies/${mid}`)
-
-            // const data = await res.json()
-
-            // return data
         },
         async fetchCinema(cid) {
-            Axios.get('http://localhost:8181/cinemas',{
+            const _this=this
+            Axios.get('http://localhost:8181/cinemas/cinema_id',{
                 params:{
                     cid: cid
                 }
             }).then(function(res){
-                this.cinema = res.data;
+                _this.cinema = res.data;
             }).catch(function (error) {
                 console.log(error);
             });
@@ -191,16 +172,17 @@ export default {
 
             // return data
         },
-        async fetchHall(mid,cid,tid,did) {
-            Axios.get('http://localhost:8181/movieCinemaTime',{
+        async fetchHall(tid) {
+          console.log(tid);
+            const _this=this;
+            Axios.get('http://localhost:8181/hall/schedule_id',{
                 params:{
-                    mid: mid,
-                    cid: cid,
-                    tid: tid,
-                    did: did
+                    tid:tid
                 }
             }).then(function(res){
-                this.hall = res.data;
+              console.log(res.data);
+                _this.hall = res.data["hall"];
+                _this.schedule = res.data["schedule"];
             }).catch(function (error) {
                 console.log(error);
             });
@@ -211,51 +193,49 @@ export default {
 
             // return data
         },
-        async fetchSeats(mid,cid,did) {
-            Axios.get('http://localhost:8181/seatsMCD',{
+        async fetchSeats(mid,cid,tid,did) {
+            const _this=this
+            Axios.get('http://localhost:8181/seats',{
                 params:{
                     mid: mid,
                     cid: cid,
+                    tid: tid,
                     did: did
                 }
             }).then(function(res){
-                this.seats = res.data;
+                _this.seats = res.data;
             }).catch(function (error) {
                 console.log(error);
             });
 
-            // const res = await fetch(`api/seatsM${mid}C${cid}D${did}`)
+            // const res = await fetch(`api/seatsM${mid}C${cid}T${tid}D${did}`)
 
             // const data = await res.json()
 
             // return data
         },
-        async fetchSeat(mid,cid,did,sid) {
-            Axios.get('http://localhost:8181/seatsMCD',{
-                params:{
-                    mid: mid,
-                    cid: cid,
-                    did: did,
-                    sid: sid
-                }
-            }).then(function(res){
-                return res.json()
-            }).catch(function (error) {
-                console.log(error);
-            });
+        async fetchSeat(mid,cid,tid,did,sid) {
+            const res = await Axios.get('http://localhost:8181/seats/seat_id', {
+              params: {
+                mid: mid,
+                cid: cid,
+                tid: tid,
+                did: did,
+                sid: sid
+              }
+            })
 
-            // const res = await fetch(`api/seatsM${mid}C${cid}D${did}/${sid}`)
 
-            // const data = await res.json()
-
-            // return data
+          const data = await res.data
+          return data
         }
     },
     async created () {
         this.fetchMovie(this.$route.query.mid)
         this.fetchCinema(this.$route.query.cid)
-        this.fetchSeats(this.$route.query.mid,this.$route.query.cid,this.$route.query.did)
-        this.fetchHall(this.$route.query.mid,this.$route.query.cid,this.$route.query.tid,this.$route.query.did)
+        console.log(this.$route.query.did)
+        this.fetchSeats(this.$route.query.mid,this.$route.query.cid,this.$route.query.tid,this.$route.query.did)
+        this.fetchHall(this.$route.query.did)
     }
 }
 </script>

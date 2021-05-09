@@ -1,13 +1,17 @@
 package com.py.software.service;
 
+import com.py.software.entity.Hall;
 import com.py.software.entity.Movie;
+import com.py.software.repository.HallRepository;
 import com.py.software.repository.MovieRepository;
+import com.py.software.repository.ScheduleRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -17,6 +21,13 @@ public class ImpMovieInterface implements MovieInterface{
 
     @Autowired
     private MovieRepository movieRepository;
+
+    @Autowired
+    private HallRepository hallRepository;
+
+    @Autowired
+    private ScheduleRepository scheduleRepository;
+
 
     @Transactional(propagation= Propagation.REQUIRED,readOnly=true)
     @Override
@@ -74,6 +85,14 @@ public class ImpMovieInterface implements MovieInterface{
         movie.setMovie_box_office(temp+price);
         movieRepository.save(movie);
     }
+
+    @Transactional(propagation= Propagation.REQUIRED,readOnly=true)
+    @Override
+    public List<Movie> findAllMovie(){
+        return movieRepository.findAll();
+    }
+
+
 
     @Transactional(propagation= Propagation.REQUIRED,readOnly=true)
     @Override

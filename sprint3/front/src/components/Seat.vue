@@ -12,9 +12,18 @@ export default {
     },
     data() {
         return {
-            row: 50*(this.seat.row-1),
-            column: 60*(this.seat.column-1),
+            row: 100*(this.seat.row-1),
+            column: 100*(this.seat.column-1),
             tempSelect: false
+        }
+    },
+    watch: {
+        seat:{
+            handler(val, oldVal){
+                if(val.isSelected != oldVal.isSelected)
+                    this.count()
+            },
+            deep:true
         }
     },
     computed: {
@@ -27,19 +36,22 @@ export default {
             if(this.seat.isAvailable) {
                 this.tempSelect = !this.tempSelect
                 this.$emit('seatSelected',id);
-            } else if(!this.seat.isSelected) {
+            }
+        },
+        count() {
+            if(this.tempSelect == true && !this.seat.isSelected) {
                 this.tempSelect = false
             }
         },
-    },
+    }
 }
 </script>
 
 
 <style>
     .seat {
-    height: 50px;
-    width: 60px;
+    height: 67px;
+    width: 79px;
     margin: 2px 3px;
     font-size: 1rem;
     color: white;
@@ -70,6 +82,6 @@ export default {
     }
 
     .unavailable:hover:not(.selected){
-        background-color:#999999;
+        background-color: #999999;
     }
 </style>

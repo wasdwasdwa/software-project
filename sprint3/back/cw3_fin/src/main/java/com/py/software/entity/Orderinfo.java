@@ -9,8 +9,7 @@ import java.util.Date;
 @Data
 public class Orderinfo {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long order_id;
+    private String order_id;
     private Long user_id;
     private Long schedule_id;
     private String order_position;

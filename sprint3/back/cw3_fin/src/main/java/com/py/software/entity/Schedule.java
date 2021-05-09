@@ -3,8 +3,6 @@ package com.py.software.entity;
 import lombok.Data;
 
 import javax.persistence.*;
-import javax.xml.bind.annotation.XmlAnyAttribute;
-import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -26,5 +24,5 @@ public class Schedule {
     @Transient
     private List<Orderinfo> orderingList;
     @Transient
-    private Date newTime;
+    private String newTime;
 }

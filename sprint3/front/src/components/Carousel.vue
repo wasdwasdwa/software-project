@@ -1,16 +1,12 @@
 <template>
 <div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel">
-    <div v-for="movie in movies" :key="movie.id">
+    <div v-for="movie in movies" :key="movie.movie_id">
     <div class="carousel-indicators">
-        <button type="button" data-bs-target="#carouselExampleCaptions" :data-bs-slide-to="movie.id" :class="[movie.id == index ? 'active' : '']" :aria-current="[movie.id == index ? 'true' : '']" :aria-label="`Slide ${movie.id}`"></button>
+        <button type="button" data-bs-target="#carouselExampleCaptions" :data-bs-slide-to="movie.movie_id" :class="[movie.movie_id == index ? 'active' : '']" :aria-current="[movie.movie_id == index ? 'true' : '']" :aria-label="`Slide ${movie.movie_id}`"></button>
     </div>
     <div class="carousel-inner">
-        <div :class="[movie.id == index ? 'active' : '','carousel-item']">
-            <img :src="movie.poster" class="d-block w-100" :alt="movie.name">
-            <!-- <div class="carousel-caption d-none d-md-block">
-                <h5>{{movie.name}}</h5>
-                <p>{{movie.description}}</p>
-            </div> -->
+        <div :class="[movie.movie_id == index ? 'active' : '','carousel-item']">
+            <img :src="movie.movie_picture" class="d-block w-100" :alt="movie.movie_cn_name">
         </div>
     </div>
     </div>

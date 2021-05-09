@@ -12,6 +12,7 @@ public interface OrderInfoInterface {
     void updateOrderToRefund(Long order_id);
     void updateOrderToRefunded(Long order_id);
     Page<Orderinfo> findOrderByUsername(Integer page,Integer limit,String username);
+    List<Orderinfo> findOrderByName(String username);
     List<Orderinfo> findAllOrders();
     List<Orderinfo> findRefundByUsername(String username);
     List<Orderinfo> findRefundedByUsername(String username);

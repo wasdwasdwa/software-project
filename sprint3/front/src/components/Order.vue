@@ -12,10 +12,10 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <h5><b>Movie:</b> {{movie.name}}</h5>
-                <h5><b>Cinema:</b> {{cinema.name}}</h5>
-                <h5><b>Time:</b> {{hall.time}}</h5>
-                <h5><b>Hall:</b> {{hall.hall}}</h5>
+                <h5><b>Movie:</b> {{movie.movie_cn_name}}</h5>
+                <h5><b>Cinema:</b> {{cinema.cinema_name}}</h5>
+                <h5><b>Time:</b> {{schedule.newTime}}</h5>
+                <h5><b>Hall:</b> {{hall.hall_name}}</h5>
                 <h5><b>Seats:</b></h5> 
                 <div v-for="seat in selected" :key="seat.id">
                 {{seat.row}}-{{seat.column}}
@@ -38,6 +38,7 @@ export default {
         movie: Object,
         hall: Object,
         cinema: Object,
+        schedule:Object,
         selected: Array
     },
     methods: {
@@ -45,6 +46,7 @@ export default {
             this.$emit('order');
         },
         count() {
+            const self = this
             let end;
             const el = document.querySelector('#count')
             function countdown() {
@@ -54,18 +56,17 @@ export default {
                 if (count < 0) return
                 el.innerText = count
                 if(count == 0) {
-                    document.getElementById('cancel').click()
-                    this.$emit('unselect')
-                    return
+                    document.getElementById('cancel').click();
+                    self.$emit('unselect');
+                    return;
                 }
                 let delay = ((end - count * 1000) - now + 1000) % 1000
                 if (delay == 0) delay = 1000
-                console.log(delay)
                 setTimeout(() => {
                     countdown()
                 }, delay)
             }
-            end = +new Date() + 6000
+            end = +new Date() + 15000
             countdown()
         }
     }

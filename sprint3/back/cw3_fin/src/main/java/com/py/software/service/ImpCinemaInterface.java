@@ -2,6 +2,7 @@ package com.py.software.service;
 
 import com.py.software.entity.Cinema;
 import com.py.software.entity.Hall;
+import com.py.software.entity.Movie;
 import com.py.software.entity.Schedule;
 import com.py.software.repository.CinemaRepository;
 import com.py.software.repository.HallRepository;
@@ -73,6 +74,15 @@ public class ImpCinemaInterface implements CinemaInterface{
             Hall hall = hallRepository.findById(schedule.getHall_id()).get();
             Cinema cinema = cinemaRepository.findById(hall.getCinema_id()).get();
             result.add(cinema);
+        }
+        for  ( int  i  =   0 ; i  <  result.size()  -   1 ; i ++ )   {
+            for  ( int  j  =  result.size()  -   1 ; j  >  i; j -- )   {
+                Cinema jjj =(Cinema)result.get(j);
+                Cinema iii =(Cinema)result.get(i);
+                if  ( iii.getCinema_id().equals(jjj.getCinema_id() ))   {
+                    result.remove(j);
+                }
+            }
         }
         return result;
     }
