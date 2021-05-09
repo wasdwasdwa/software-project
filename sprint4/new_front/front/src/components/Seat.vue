@@ -1,6 +1,6 @@
 <template>
         <div @click="selected(seat.id)" :class="[seat.isAvailable ? 'available' : 'unavailable',!seat.isSelected ? 'available' : 'unavailable',tempSelect ? 'selected' :'', 'seat']" :style="style">
-        <span class="display-7 font-weight-thin">{{seat.row}}-{{seat.column}}</span>
+        <!-- <span class="display-7 font-weight-thin">{{seat.row}}-{{seat.column}}</span> -->
     </div>
 </template>
 
@@ -64,24 +64,34 @@ export default {
     }
 
     .available{
-        background-color: rgba(133,36,12);
+        background-image: url('../assets/icon/red.png');
         cursor: pointer;
+        background-size: 100% 100%;
+        background-repeat:no-repeat;
     }
 
     .available:hover:not(.selected) {
-        background-color: #40756e;
+        background-image: url('../assets/icon/blue.png');
+        background-size: 100% 100%;
+        background-repeat:no-repeat;
     }
 
 
     .unavailable{
-        background-color:#999999;
+        background-image: url('../assets/icon/grey.png');
+        background-size: 100% 100%;
+        background-repeat:no-repeat;
     }
 
     .selected{
-        background-color: rgba(237,169,58 ,0.9);
+        background-image: url('../assets/icon/yellow.png');
+        background-size: 100% 100%;
+        background-repeat:no-repeat;
     }
 
     .unavailable:hover:not(.selected){
-        background-color:#999999;
+        background-image: url('../assets/icon/grey.png');
+        background-size: 100% 100%;
+        background-repeat:no-repeat;
     }
 </style>

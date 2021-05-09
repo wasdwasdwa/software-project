@@ -67,7 +67,7 @@ export default {
             this.$emit('unselect');
         },
         count() {
-            const self = this
+            // const _self = this
             let end;
             const el = document.querySelector('#count')
             function countdown() {
@@ -78,7 +78,7 @@ export default {
                 el.innerText = count
                 if(count == 0) {
                     document.getElementById('cancel').click();
-                    self.$emit('unselect');
+                    // _self.$emit('unselect');
                     return;
                 }
                 let delay = ((end - count * 1000) - now + 1000) % 1000
